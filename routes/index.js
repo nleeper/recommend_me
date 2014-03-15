@@ -4,8 +4,10 @@
  */
 
 exports.index = function(req, res){
-  global.diceClient.getJobs({ term: 'rails', fields: ['description', 'id', 'skills', 'company', 'position'] }, function(err, body) {
-    console.log(body.jobs);
-    res.render('index', { title: 'Recommend Me', jobs: body.jobs });
+  var page = req.query.page || 1;
+  global.diceClient.getJobs({ size: global.config.dice.size, page: page, term: 'neat' }, function(err, body) {
+    body['size'] = global.config.dice.size;
+    console.log(body);
+    res.render('index', { title: 'Recommend Me', results: body });
   });
 };

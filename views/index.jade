@@ -1,16 +1,31 @@
 extends layout
 
 block content
-  h1 Recommended jobs
-  div.job-list
-    each j in jobs
-        div.panel.panel-default
-            div.panel-heading
-                h3.panel-title
-                    a(href=j.webUrl, target='_blank') #{j.position.title}
-                p.company #{j.company.name}
-                a.description-link(data-toggle='collapse', data-target=('#' + j.id + '-description')) Show description
-                div.clear
-            div.panel-collapse.collapse(id=(j.id + '-description'))
-                div.panel-body
-                    p !{j.description}
+    h1.banner Jobs you may be interested in (#{results.total})
+    div.showing
+        - var start = ((results.page - 1) * results.size) + 1
+        - var end = start + results.count - 1
+        p Showing #{start} - #{end}
+    div.job-list
+        each j in results.jobs
+            div.panel.panel-default
+                div.panel-heading
+                    h3.panel-title
+                        a(href=j.webUrl, target='_blank') #{j.position.title}
+                    p.company #{j.company.name} - #{j.position.location.city + ', ' + j.position.location.region}
+                    a.description-link(data-toggle='collapse', data-target=('#' + j.id + '-description')) Show description
+                    div.clear
+                div.panel-collapse.collapse(id=(j.id + '-description'))
+                    div.panel-body
+                        p !{j.description}
+                div.panel-footer
+                    a(href='#') Ask for a recommendation!
+    ul.pagination
+        li(class=(results.page - 1 == 0 ? 'disabled' : ''))
+            a(href=('/?page=' + (results.page - 1))) &laquo;
+        - for (var i = 1; i <= results.pageCount; ++i) {
+            li(class=(results.page == i ? 'disabled' : ''))
+                a(href='/?page=' + i)= i
+        - }
+        li(class=(results.page == results.pageCount ? 'disabled': ''))
+            a(href='/?page=' + (results.page + 1)) &raquo;

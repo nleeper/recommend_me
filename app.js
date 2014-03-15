@@ -1,9 +1,11 @@
 var express = require('express'),
   routes = require('./routes'),
+  oauthRoutes = require('./routes/oauth/linkedin'),
   http = require('http'),
   path = require('path'),
   settings = require('settings'),
-  dice = require('./lib/dice');
+  dice = require('./lib/dice')
+  linkedinMiddleware = require('./lib/linkedin');
 
 var app = express();
 
@@ -25,6 +27,7 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(linkedinMiddleware('/oauth/linkedin/callback'));
 app.use(app.router);
 app.use(express.static(path.join(global.projectDir, global.config.static_dir)));
 
@@ -38,6 +41,8 @@ if (!global.hasOwnProperty('diceClient')) {
 }
 
 app.get('/', routes.index);
+app.get('/oauth/linkedin', oauthRoutes.index);
+app.get('/oauth/linkedin/callback', oauthRoutes.callback);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Server listening on port ' + app.get('port'));

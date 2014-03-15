@@ -19,7 +19,7 @@ block content
                     div.panel-body
                         p !{j.description}
                 div.panel-footer
-                    a(href='#') Ask for a recommendation!
+                    a.ask(href='#', data-id=j.id) Ask for a recommendation!
     ul.pagination
         li(class=(results.page - 1 == 0 ? 'disabled' : ''))
             a(href=('/?page=' + (results.page - 1))) &laquo;
@@ -29,3 +29,13 @@ block content
         - }
         li(class=(results.page == results.pageCount ? 'disabled': ''))
             a(href='/?page=' + (results.page + 1)) &raquo;
+    button.btn.btn-primary(data-toggle='modal', data-target='.contacts-modal') Show modal
+    div.modal.fade.contacts-modal(tabindex=-1, aria-labelledby='mySmallModalLabel' role='dialog', aria-hidden='true')
+        div.modal-dialog.modal-sm
+            div.modal-content
+                div.panel.panel-primary
+                    div.panel-heading Choose a connection
+                    ul.list-group.contacts-list
+                        each c in results.connections
+                            - var fullName = c.firstName + ' ' + c.lastName
+                            a.connection.list-group-item(href='#', data-id=c.id) #{fullName}

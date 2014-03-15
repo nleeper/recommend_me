@@ -1,6 +1,7 @@
 var userStore = require('../../../lib/userStore');
 
 function convertMeToUser(me) {
+    console.log(me.positions.values);
     var user = {
         id: me.id,
         firstName: me.firstName,
@@ -12,6 +13,13 @@ function convertMeToUser(me) {
     for (var i = me.skills.values.length - 1; i >= 0; i--) {
         var skill = me.skills.values[i];
         user.skills.push(skill.skill.name);
+    };
+
+    user.titles = [];
+
+    for (var i = me.positions.values.length - 1; i >= 0; i--) {
+        var position = me.positions.values[i];
+        user.titles.push(position.title);
     };
 
     return user;
@@ -33,6 +41,7 @@ exports.callback = function(req, res) {
         	var user = convertMeToUser($in);
 		    user.accessToken = r.access_token;
 		    userStore.save(user);
+            console.log(user);
             res.cookie('userId', user.id);
 		    res.redirect('/');
 		});

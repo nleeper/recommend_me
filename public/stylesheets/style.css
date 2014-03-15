@@ -20,3 +20,9 @@ a.description-link {
 .clear {
     clear: both;
 }
+
+h1.banner {
+    border-bottom: 1px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}

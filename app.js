@@ -2,7 +2,8 @@ var express = require('express'),
   routes = require('./routes'),
   http = require('http'),
   path = require('path'),
-  settings = require('settings');
+  settings = require('settings'),
+  dice = require('./lib/dice');
 
 var app = express();
 
@@ -25,6 +26,10 @@ app.use(express.static(path.join(__dirname, config.static_dir)));
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
+}
+
+if (!global.hasOwnProperty('diceClient')) {
+  global.diceClient = new dice(config.dice);
 }
 
 app.get('/', routes.index);

@@ -8,6 +8,7 @@
   "dependencies": {
     "express": "3.4.8",
     "jade": "*",
-    "settings": "~0.1.1"
+    "settings": "~0.1.1",
+    "request": "~2.34.0"
   }
 }

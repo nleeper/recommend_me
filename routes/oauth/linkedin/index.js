@@ -19,9 +19,9 @@ exports.callback = function(req, res) {
 		    	skillNames.push(skill.skill.name);
 		    };
 		    
-		    console.log(skillNames);
+		    res.cookie('userId', 'temp');
 
-		    res.end();
+		    res.redirect('/');
 		});
     });
 };

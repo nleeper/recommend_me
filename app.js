@@ -5,7 +5,8 @@ var express = require('express'),
   path = require('path'),
   settings = require('settings'),
   dice = require('./lib/dice')
-  linkedinMiddleware = require('./lib/linkedin');
+  linkedinMiddleware = require('./lib/linkedin'),
+  loggedinMiddleware = require('./lib/loggedin');
 
 var app = express();
 
@@ -27,6 +28,8 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.cookieParser());
+app.use(loggedinMiddleware());
 app.use(linkedinMiddleware('/oauth/linkedin/callback'));
 app.use(app.router);
 app.use(express.static(path.join(global.projectDir, global.config.static_dir)));
@@ -41,6 +44,7 @@ if (!global.hasOwnProperty('diceClient')) {
 }
 
 app.get('/', routes.index);
+app.get('/logout', routes.logout);
 app.get('/oauth/linkedin', oauthRoutes.index);
 app.get('/oauth/linkedin/callback', oauthRoutes.callback);
 

@@ -1,5 +1,11 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Recommended jobs
+  div.job-list
+    each j in jobs
+        div.job
+            h3.position
+                a(href=j.webUrl, target='_blank') #{j.position.title}
+            span.company #{j.company.name}
+            p.description !{j.description}

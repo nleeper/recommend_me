@@ -41,7 +41,7 @@ exports.callback = function(req, res) {
         	var user = convertMeToUser($in);
 		    user.accessToken = r.access_token;
 		    userStore.save(user);
-            console.log(user);
+//            console.log($in);
             res.cookie('userId', user.id);
 		    res.redirect('/');
 		});

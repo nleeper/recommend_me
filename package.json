@@ -12,6 +12,7 @@
     "request": "~2.34.0",
     "underscore": "~1.6.0",
     "node-linkedin": "~0.1.5",
-    "node-uuid": "~1.4.1"
+    "node-uuid": "~1.4.1",
+    "httpsync": "0.0.8"
   }
 }

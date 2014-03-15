@@ -1,4 +1,7 @@
 $(document).ready(function() {
+var x = document.getElementById("demo");
+function getLocation()
+  {
     var connectionsModal = $('.contacts-modal');
 
     $('a.description-link').click(function() {

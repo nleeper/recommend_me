@@ -9,6 +9,7 @@ exports.index = function(req, res){
     body['size'] = global.config.dice.size;
     body.connections = req.linkedin.connections.retrieve(function(err, $in) {
     	body.connections = $in.values;
+      console.log(body.connections);
     	res.render('index', { title: 'Recommend Me', results: body });
     });
   });

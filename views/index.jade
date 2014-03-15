@@ -4,8 +4,13 @@ block content
   h1 Recommended jobs
   div.job-list
     each j in jobs
-        div.job
-            h3.position
-                a(href=j.webUrl, target='_blank') #{j.position.title}
-            span.company #{j.company.name}
-            p.description !{j.description}
+        div.panel.panel-default
+            div.panel-heading
+                h3.panel-title
+                    a(href=j.webUrl, target='_blank') #{j.position.title}
+                p.company #{j.company.name}
+                a.description-link(data-toggle='collapse', data-target=('#' + j.id + '-description')) Show description
+                div.clear
+            div.panel-collapse.collapse(id=(j.id + '-description'))
+                div.panel-body
+                    p !{j.description}

@@ -1,12 +1,14 @@
 var express = require('express'),
   routes = require('./routes'),
   oauthRoutes = require('./routes/oauth/linkedin'),
+  referralRoutes = require('./routes/referral'),
   http = require('http'),
   path = require('path'),
   settings = require('settings'),
   dice = require('./lib/dice')
   linkedinMiddleware = require('./lib/linkedin'),
-  fs = require('fs');
+  loggedinMiddleware = require('./lib/loggedin'),
+  currentUserMiddleware = require('./lib/currentUser');
 
 var app = express();
 
@@ -28,7 +30,11 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.bodyParser());
+app.use(express.cookieParser());
+app.use(loggedinMiddleware());
 app.use(linkedinMiddleware('/oauth/linkedin/callback'));
+app.use(currentUserMiddleware());
 app.use(app.router);
 app.use(express.static(path.join(global.projectDir, global.config.static_dir)));
 
@@ -42,6 +48,8 @@ if (!global.hasOwnProperty('diceClient')) {
 }
 
 app.get('/', routes.index);
+app.get('/logout', routes.logout);
+app.post('/referral', referralRoutes.post);
 app.get('/oauth/linkedin', oauthRoutes.index);
 app.get('/oauth/linkedin/callback', oauthRoutes.callback);
 

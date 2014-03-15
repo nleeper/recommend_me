@@ -18,6 +18,8 @@ block content
                     div.clear
                 div.panel-collapse.collapse(id=(j.id + '-description'))
                     div.panel-body
+                        - var skills = (j.skills ? j.skills.join(', ') : '');
+                        p.skills <strong>Skills:</strong> #{skills}
                         p !{j.description}
                 div.panel-footer
                     a.ask(href='#', data-id=j.id) Ask for a recommendation!

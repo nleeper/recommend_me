@@ -24,7 +24,7 @@ exports.index = function(req, res){
   var zip = getZip(req);
 
   var page = req.query.page || 1;
-  global.diceClient.getJobs({ size: global.config.dice.size, page: page, term: 'neat' }, function(err, body) {
+  global.diceClient.matchJobs(req.user.titles, req.user.skills, 50321, function(err, body) {
     body['size'] = global.config.dice.size;
     body.connections = req.linkedin.connections.retrieve(function(err, $in) {
     	body.connections = $in.values;

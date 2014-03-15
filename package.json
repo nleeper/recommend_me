@@ -13,6 +13,7 @@
     "underscore": "~1.6.0",
     "node-linkedin": "~0.1.5",
     "async": "~0.2.10",
-    "node-uuid": "~1.4.1"
+    "node-uuid": "~1.4.1",
+    "string": "~1.8.0"
   }
 }

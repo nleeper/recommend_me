@@ -1,3 +1,22 @@
+var userStore = require('../../../lib/userStore');
+
+function convertMeToUser(me) {
+    var user = {
+        id: me.id,
+        firstName: me.firstName,
+        lastName: me.lastName
+    }
+
+    user.skills = [];
+
+    for (var i = me.skills.values.length - 1; i >= 0; i--) {
+        var skill = me.skills.values[i];
+        user.skills.push(skill.skill.name);
+    };
+
+    return user;
+}
+
 exports.index = function(req, res) {
     global.linkedin.auth.authorize(res, ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network', 'r_contactinfo', 'rw_nus', 'rw_groups', 'w_messages']);
 };
@@ -11,16 +30,10 @@ exports.callback = function(req, res) {
         var linkedin = global.linkedin.init(r.access_token);
 
         linkedin.people.me(function(err, $in) {
-        	var skillNames = [];
-
- 		    for (var i = $in.skills.values.length - 1; i >= 0; i--) {
-		    	var skill = $in.skills.values[i];
-
-		    	skillNames.push(skill.skill.name);
-		    };
-		    
-		    res.cookie('userId', 'temp');
-
+        	var user = convertMeToUser($in);
+		    user.accessToken = r.access_token;
+		    userStore.save(user);
+            res.cookie('userId', user.id);
 		    res.redirect('/');
 		});
     });

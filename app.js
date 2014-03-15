@@ -6,7 +6,8 @@ var express = require('express'),
   settings = require('settings'),
   dice = require('./lib/dice')
   linkedinMiddleware = require('./lib/linkedin'),
-  loggedinMiddleware = require('./lib/loggedin');
+  loggedinMiddleware = require('./lib/loggedin'),
+  currentUserMiddleware = require('./lib/currentUser');
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(loggedinMiddleware());
 app.use(linkedinMiddleware('/oauth/linkedin/callback'));
+app.use(currentUserMiddleware());
 app.use(app.router);
 app.use(express.static(path.join(global.projectDir, global.config.static_dir)));
 

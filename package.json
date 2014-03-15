@@ -1,17 +1,12 @@
 {
   "name": "recommend_me",
   "version": "0.0.1",
-  "description": "Recommend me to jobs I'm interested in",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/nleeper/recommend_me.git"
-  },
-  "author": "Nick Leeper & Josh Aaseby",
-  "license": "BSD",
-  "readmeFilename": "README.md",
-  "gitHead": "5db1cf8e5db1f4d2a52299729870eb1b6d0e34db"
+  "dependencies": {
+    "express": "3.4.8",
+    "jade": "*"
+  }
 }

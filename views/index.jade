@@ -17,6 +17,7 @@ block content
                     div.clear
                 div.panel-collapse.collapse(id=(j.id + '-description'))
                     div.panel-body
+                        p.skills <strong>Skills:</strong> #{j.skills.join(', ')}
                         p !{j.description}
                 div.panel-footer
                     a(href='#') Ask for a recommendation!

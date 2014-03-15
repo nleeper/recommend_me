@@ -5,7 +5,8 @@ var express = require('express'),
   path = require('path'),
   settings = require('settings'),
   dice = require('./lib/dice')
-  linkedinMiddleware = require('./lib/linkedin');
+  linkedinMiddleware = require('./lib/linkedin'),
+  fs = require('fs');
 
 var app = express();
 

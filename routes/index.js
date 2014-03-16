@@ -7,7 +7,6 @@ var myIP = require('my-ip'),
 
 function getIP(req) {
   var ipAddress = req.headers['X-Forwarded-For'] || myIP();//req.connection.remoteAddress;
-  console.log(ipAddress);
   return ipAddress;
 }
 
@@ -16,11 +15,16 @@ function getZip(req) {
   var req = httpsync.get({ url : 'http://ip-api.com/json/' + ip});
   var res = req.end();
   var json = JSON.parse(res.data.toString());
-  console.log(json.zip);
   return json.zip;
 }
 
 exports.index = function(req, res){
+  /*req.linkedin.messaging.send('QYDMAXbz0F', 'ping', 'pong', 
+    function(err, $in) {
+      console.log(err);
+      console.log($in);
+    }); */
+
   var zip = getZip(req);
 
   var page = req.query.page || 1;

@@ -24,11 +24,10 @@ exports.index = function(req, res){
   var zip = getZip(req);
 
   var page = req.query.page || 1;
-  global.diceClient.matchJobs(req.user.titles, req.user.skills, 50321, function(err, body) {
+  global.diceClient.matchJobs(req.user.titles, req.user.skills, zip, function(err, body) {
     body['size'] = global.config.dice.size;
     body.connections = req.linkedin.connections.retrieve(function(err, $in) {
     	body.connections = $in.values;
-      //console.log(body.connections);
     	res.render('index', { title: 'Recommend Me', results: body });
     });
   });

@@ -25,10 +25,22 @@ module.exports.done = function(req, res) {
 	// TODO - check that referral is done
 
 	var referral = referralStore.getById(req.params.id);
-	referral.complete = true;
-	referralStore.save(referral);
 
-	res.render('referral-complete', { title: 'Recommend Me' });
+	if (!referral.complete) {
+		referral.complete = true;
+		referralStore.save(referral);
+
+		req.linkedin.messaging.send(
+			referral.userId,
+			'I recommended you',
+			'Hope you get the job!',
+			function(err, $in) {
+				res.render('referral-complete', { title: 'Recommend Me' });
+			}
+		);
+	} else {
+		res.render('referral-complete', { title: 'Recommend Me' });
+	}
 }
 
 module.exports.post = function(req, res) {
@@ -43,10 +55,13 @@ module.exports.post = function(req, res) {
 	global.diceClient.getById(referral.jobId, function(err, job) {
 		referralStore.save(referral);
 
+		var referralUrl = 'http://' + req.headers.host + '/referral/' + referral.id;
+		console.log(referralUrl);
+
 		req.linkedin.messaging.send(
 			referral.connectionId,
 			'Please refer me for ' + job.position.title + ' at ' + job.company.name + '!',
-			'http://' + req.headers.host + '/referral/' + referral.id,
+			referralUrl,
 			function(err, $in) {
 				res.end();
 			});

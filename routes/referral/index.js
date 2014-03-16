@@ -1,32 +1,54 @@
-var referralStore = require('../../lib/referralStore')
-	;//, dice = require('./lib/dice');
+var referralStore = require('../../lib/referralStore'),
+	userStore = require('../../lib/userStore');
 
 module.exports.getById = function(req, res) {
 	var referral = referralStore.getById(req.params.id);
 
+	var results = {
+		referral: referral,
+		referree: userStore.getById(referral.userId),
+		doneUrl: req.protocol + '://' + req.get('host') + req.originalUrl + '/done'
+	};
+
+	console.log(results);
+
 	// should check user.id with referral.connectionId... should
 
-
+	if (!!referral.complete) {
+		res.render('referral-complete', { title: 'Recommend Me', results: results });
+	} else {
+		res.render('referral', { title: 'Recommend Me', results: results });
+	}
 };
+
+module.exports.done = function(req, res) {
+	// TODO - check that referral is done
+
+	var referral = referralStore.getById(req.params.id);
+	referral.complete = true;
+	referralStore.save(referral);
+
+	res.render('referral-complete', { title: 'Recommend Me' });
+}
 
 module.exports.post = function(req, res) {
 	var request = req.body;
-	//var job = 
-
 	var referral = {
 		userId: req.user.id,
 		connectionId: request.connectionId,
 		jobId: request.jobId,
 		amount: 0.00
 	};
+	
+	global.diceClient.getById(referral.jobId, function(err, job) {
+		referralStore.save(referral);
 
-	referralStore.save(referral);
-
-	req.linkedin.messaging.send(
-		referral.connectionId,
-		'Please refer me for ' + job.position.title + ' ' + job.company.name + '!',
-		'http://' + req.headers.host + '/referral/' + referral.id,
-		function(err, $in) {
-			res.end();
-		});
+		req.linkedin.messaging.send(
+			referral.connectionId,
+			'Please refer me for ' + job.position.title + ' at ' + job.company.name + '!',
+			'http://' + req.headers.host + '/referral/' + referral.id,
+			function(err, $in) {
+				res.end();
+			});
+	});
 };

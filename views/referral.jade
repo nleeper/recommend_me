@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	h1.banner Refer #{results.referree.firstName}
+	ol.list-group
+		li.list-item
+			a(href=results.referree.profileUrl, target='_blank') Go to #{results.referree.firstName}'s profile and make a reference
+		li.list-item
+			a(href=results.doneUrl) Click here, that's it

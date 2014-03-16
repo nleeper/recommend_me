@@ -17,8 +17,7 @@ function getZip(req, res, callback) {
 }
 
 exports.index = function(req, res){
-  getZip(req, res, function(zip) {
-    console.log(zip);
+  getZip(req, res, function(req, res, zip) {
       var page = req.query.page || 1;
       global.diceClient.matchJobs(req.user.titles, req.user.skills, zip, function(err, body) {
         body['size'] = global.config.dice.size;

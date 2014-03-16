@@ -1,11 +1,12 @@
 var userStore = require('../../../lib/userStore');
 
 function convertMeToUser(me) {
-    console.log(me.positions.values);
+    console.log(me);
     var user = {
         id: me.id,
         firstName: me.firstName,
-        lastName: me.lastName
+        lastName: me.lastName,
+        profileUrl: me.publicProfileUrl
     }
 
     user.skills = [];

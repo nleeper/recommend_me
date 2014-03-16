@@ -26,3 +26,7 @@ h1.banner {
     padding-bottom: 8px;
     margin-bottom: 15px;
 }
+
+span.matched {
+    color: green;
+}

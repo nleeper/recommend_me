@@ -2,14 +2,33 @@
 /*
  * GET home page.
  */
+var myIP = require('my-ip'),
+  httpsync = require('httpsync');
+
+function getIP(req) {
+  var ipAddress = req.headers['X-Forwarded-For'] || myIP();//req.connection.remoteAddress;
+  console.log(ipAddress);
+  return ipAddress;
+}
+
+function getZip(req) {
+  var ip = getIP(req);
+  var req = httpsync.get({ url : 'http://ip-api.com/json/' + ip});
+  var res = req.end();
+  var json = JSON.parse(res.data.toString());
+  console.log(json.zip);
+  return json.zip;
+}
 
 exports.index = function(req, res){
+  var zip = getZip(req);
+
   var page = req.query.page || 1;
   global.diceClient.matchJobs(req.user.titles, req.user.skills, 50321, function(err, body) {
     body['size'] = global.config.dice.size;
     body.connections = req.linkedin.connections.retrieve(function(err, $in) {
     	body.connections = $in.values;
-      console.log(body.connections);
+      //console.log(body.connections);
     	res.render('index', { title: 'Recommend Me', results: body });
     });
   });

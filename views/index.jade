@@ -23,6 +23,7 @@ block content
                         -   for (var s in j.skills) {
                         -       skills += (j.skills[s].matched ? '<span class="matched">' + j.skills[s].skill + '</span>' : j.skills[s].skill) + ', ';
                         -   }
+                        -   skills = skills.substring(0, skills.length - 2);
                         - }
                         p.skills <strong>Skills:</strong> !{skills}
                         p !{j.description}

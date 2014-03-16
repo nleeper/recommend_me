@@ -1,5 +1,5 @@
 body {
-  padding: 50px;
+  padding: 10px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -24,6 +24,7 @@ a.description-link {
 h1.banner {
     border-bottom: 1px solid #000;
     padding-bottom: 8px;
+    margin-top: 50px;
     margin-bottom: 15px;
 }
 

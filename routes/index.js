@@ -1,40 +1,32 @@
-
-/*
- * GET home page.
- */
 var myIP = require('my-ip'),
-  httpsync = require('httpsync');
+    request = require('request');
 
 function getIP(req) {
-  var ipAddress = req.headers['X-Forwarded-For'] || myIP();//req.connection.remoteAddress;
-  return ipAddress;
+  return req.headers['X-Forwarded-For'] || myIP();
 }
 
-function getZip(req) {
+function getZip(req, res, callback) {
   var ip = getIP(req);
-  var req = httpsync.get({ url : 'http://ip-api.com/json/' + ip});
-  var res = req.end();
-  var json = JSON.parse(res.data.toString());
-  return json.zip;
+
+  request('http://ip-api.com/json/' + ip, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var json = JSON.parse(body);
+      callback(req, res, json.zip);
+    }
+  });
 }
 
 exports.index = function(req, res){
-  /*req.linkedin.messaging.send('QYDMAXbz0F', 'ping', 'pong', 
-    function(err, $in) {
-      console.log(err);
-      console.log($in);
-    }); */
-
-  var zip = getZip(req);
-
-  var page = req.query.page || 1;
-  global.diceClient.matchJobs(req.user.titles, req.user.skills, 50321, function(err, body) {
-    body['size'] = global.config.dice.size;
-    body.connections = req.linkedin.connections.retrieve(function(err, $in) {
-    	body.connections = $in.values;
-      //console.log(body.connections);
-    	res.render('index', { title: 'Recommend Me', results: body });
-    });
+  getZip(req, res, function(zip) {
+    console.log(zip);
+      var page = req.query.page || 1;
+      global.diceClient.matchJobs(req.user.titles, req.user.skills, 50321, function(err, body) {
+        body['size'] = global.config.dice.size;
+        body.connections = req.linkedin.connections.retrieve(function(err, $in) {
+          body.connections = $in.values;
+          res.render('index', { title: 'Recommend Me', results: body });
+        });
+      });
   });
 };
 

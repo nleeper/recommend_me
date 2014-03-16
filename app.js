@@ -50,6 +50,7 @@ if (!global.hasOwnProperty('diceClient')) {
 app.get('/', routes.index);
 app.get('/logout', routes.logout);
 app.post('/referral', referralRoutes.post);
+app.get('/referral/:id', referralRoutes.getById);
 app.get('/oauth/linkedin', oauthRoutes.index);
 app.get('/oauth/linkedin/callback', oauthRoutes.callback);
 
